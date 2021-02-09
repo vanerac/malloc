@@ -12,8 +12,8 @@ void free(void *ptr) {
         return;
     memblock *val = (memblock *)((long )ptr -  sizeof(memblock));
     val->_free = 1;
-    if (val->_prev && val->_next) {
-        val->_prev = val->_next;
-        val->_next->_prev = val->_prev;
-    }
+//    if (val->_prev && val->_next) {
+//        val->_prev = val->_next;
+//        val->_next->_prev = val->_prev;
+//    }
 }
