@@ -8,6 +8,8 @@
 #include "my_mem.h"
 
 void *calloc(size_t nmemb, size_t size) {
-    (void) nmemb, (void) size;
-    return NULL;
+
+    void *ptr = malloc(nmemb * size);
+    memset(ptr, 0, nmemb * size);
+    return ptr;
 }

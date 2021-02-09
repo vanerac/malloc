@@ -42,6 +42,7 @@ memblock *my_blocks(memblock *v)
 
 void *find_mem(size_t size)
 {
+    // todo find blocks following each other
     memblock *cursor = my_blocks(NULL);
     memblock *ret = NULL;
     int i = 0;

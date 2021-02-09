@@ -8,6 +8,7 @@
 #include "my_mem.h"
 
 void free(void *ptr) {
+    // TODO magic number check first bytes
     if (!ptr)
         return;
     memblock *val = (memblock *)((long )ptr -  sizeof(memblock));

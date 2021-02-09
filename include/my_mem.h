@@ -10,6 +10,7 @@
 
 #include <stddef.h>
 #include <unistd.h>
+#include <string.h>
 
 /*
  * TODO Musts:

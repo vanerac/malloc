@@ -12,7 +12,7 @@ SRC				=		src/calloc.c	\
 						src/realloc.c	\
 						src/utils.c
 
-BUILDDIR		=    obj
+BUILDDIR		=    	build
 
 override OBJ	=		$(SRC:%.c=$(BUILDDIR)/%.o)
 
@@ -29,7 +29,7 @@ LDFLAGS			=		-shared
 NAME			=		 libmy_malloc.so
 
 
-all: $(NAME)
+all: $(NAME) ## hoes mad
 
 $(NAME): $(OBJ)
 	$(LINK.o) $(OBJ) -o $(NAME)
@@ -47,18 +47,22 @@ $(BUILDDIR)%/.:
 
 .PRECIOUS:            $(BUILDDIR)/. $(BUILDDIR)%/.
 
-clean:
+clean: ## rm build obj
 	$(RM) -r $(BUILDDIR)
 
-fclean:	clean
+fclean:	clean ## clean + rm $(NAME)
 	rm -rf $(NAME)
 
-gclean:	fclean clean
+gclean:	fclean clean ## ?
 
-re: gclean all
+re: gclean all ## Re
 
-tests_run:	$(OTRC) $(OBJ)
+tests_run:	$(OTRC) $(OBJ) ## Run Tests
 	gcc -o unit_test $(OTRC) $(OBJ) $(CFLAGS) -lcriterion --coverage
 	./unit_test
 
-.PHONY:			gclean clean fclean re tests_run all
+help:                                                        ## Print every help in the terminal
+		@printf "USAGE:\n\n"
+		@grep -E "^[a-zA-Z\\_]+:.*## " Makefile | awk 'BEGIN {FS = ":.*## "}; {printf "%-30s\033[36m%s\033[0m\n", $$1, $$2}'
+
+.PHONY:			gclean clean fclean re tests_run all help

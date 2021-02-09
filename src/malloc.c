@@ -10,7 +10,6 @@
 
 void *malloc(size_t size)
 {
-
     void *sz = sbrk(0);
     size_t init_size = inital_size(sz);  // gets set only once
 
@@ -21,8 +20,8 @@ void *malloc(size_t size)
     }
 
     size_t index = current_index(NULL);
-    if ((init_size + index + size) > end_size(NULL))
-        // fetch new memory
+    // fetch new memory
+    while ((init_size + index + size) > end_size(NULL))
         fetch_mem();
 
     //init it

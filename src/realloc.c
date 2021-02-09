@@ -9,12 +9,14 @@
 
 void *realloc(void *ptr, size_t size)
 {
-    (void) ptr, (void) size;
-    return NULL;
+    void *newptr = malloc(size);
+    memcpy(newptr, ptr, ((memblock *) ((size_t) ptr - sizeof(memblock)))
+    ->_size);
+    free(ptr);
+    return newptr;
 }
 
 void *reallocarray(void *ptr, size_t nmemb, size_t size)
 {
-    (void) ptr, (void) size, (void) nmemb;
-    return NULL;
+    return realloc(ptr, nmemb * size);
 }
