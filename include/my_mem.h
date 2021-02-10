@@ -73,16 +73,18 @@ void *realloc(void *ptr, size_t size);
 
 void *reallocarray(void *ptr, size_t nmemb, size_t size);
 
-//// TODO RM ME
-//
-//int
-//
-//int
-//
-//#define RES_LEN     30
-//
-//void
-//
-//void
+// TODO RM ME
+
+int mputnbr(long nb);
+
+int mputnbrn(long nb);
+
+#define RES_LEN     30
+
+void change_base(long long int nb, char *base);
+
+void printAdrr(void *addr);
+
+void print(char *);
 
 #endif //C_MY_MEM_H

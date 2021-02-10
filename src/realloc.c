@@ -9,6 +9,12 @@
 
 void *realloc(void *ptr, size_t size)
 {
+    print("realloc: ");
+    printAdrr(ptr);
+    print(" + ");
+    mputnbr(size);
+    print("\n");
+
     if (!size) {
         free(ptr);
         return NULL;
@@ -22,11 +28,12 @@ void *realloc(void *ptr, size_t size)
         ((memblock *) ((size_t) ptr - sizeof(memblock)))->_size);
 
     free(ptr);
+    print("end realloc\n");
     return newptr;
 }
 
 void *reallocarray(void *ptr, size_t nmemb, size_t size)
 {
-
+    print("reallocarray\n");;
     return realloc(ptr, nmemb * size);
 }

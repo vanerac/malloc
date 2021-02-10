@@ -10,7 +10,8 @@ SRC				=		src/calloc.c	\
 						src/free.c		\
 						src/malloc.c	\
 						src/realloc.c	\
-						src/utils.c
+						src/utils.c		\
+						src/RM_ME.c
 
 BUILDDIR		=    	build
 
