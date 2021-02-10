@@ -61,8 +61,8 @@ tests_run:	$(OTRC) $(OBJ) ## Run Tests
 	gcc -o unit_test $(OTRC) $(OBJ) $(CFLAGS) -lcriterion --coverage
 	./unit_test
 
-help:                                                        ## Print every help in the terminal
-		@printf "USAGE:\n\n"
-		@grep -E "^[a-zA-Z\\_]+:.*## " Makefile | awk 'BEGIN {FS = ":.*## "}; {printf "%-30s\033[36m%s\033[0m\n", $$1, $$2}'
+help:                                                        ##
+		@
+		@grep -E "^[a-zA-Z\\_]+:.*## " Makefile | awk 'BEGIN {FS = ":.*## "}; {
 
 .PHONY:			gclean clean fclean re tests_run all help

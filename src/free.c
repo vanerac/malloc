@@ -10,15 +10,10 @@
 void free(void *ptr)
 {
     // TODO magic number check first bytes
-    print("free: ");
-    printAdrr(ptr);
 
     if (!ptr)
-        return print("\n");
-
-    print(" size : ");
+        return;
     memblock *val = (memblock *) (((long) ptr) - sizeof(memblock));
-    mputnbrn(val->_size);
 
     val->_free = 1;
 }
