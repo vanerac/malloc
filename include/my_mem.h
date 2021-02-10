@@ -36,7 +36,7 @@
 // TODO bonus clear free on exit ??
 typedef struct mem_block memblock;
 
-struct __attribute__((packed)) mem_block {
+struct  mem_block {
     //int _id ;//= 0x6d616c6c6f63;
 
     size_t _size;// = 0;
@@ -53,7 +53,7 @@ size_t end_size(size_t *size);
 
 size_t inital_size(void *size);
 
-memblock *my_blocks();
+memblock **my_blocks();
 
 void *find_mem(size_t size);
 
@@ -72,5 +72,17 @@ void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 
 void *reallocarray(void *ptr, size_t nmemb, size_t size);
+
+//// TODO RM ME
+//
+//int
+//
+//int
+//
+//#define RES_LEN     30
+//
+//void
+//
+//void
 
 #endif //C_MY_MEM_H

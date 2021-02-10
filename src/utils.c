@@ -10,8 +10,8 @@
 
 size_t inital_size(void *size)
 {
-    static size_t ret = -1;
-    if (size && size < (void *) ret)
+    static size_t ret = 0;
+    if (size)
         ret = (size_t) size;
     return ret;
 }
@@ -29,36 +29,39 @@ size_t end_size(size_t *size)
     static size_t ret = 0;
     if (size)
         ret = (size_t) size;
+
+
     return ret;
 }
 
-memblock *my_blocks()
+memblock **my_blocks()
 {
-    static memblock val = {._ptr = NULL};
+    static memblock *val = NULL;
     return &val;
 }
 
 void *find_mem(size_t size)
 {
     // todo find blocks following each other
-    memblock *cursor = my_blocks(NULL);
+    memblock **cursor = my_blocks();
     memblock *ret = NULL;
     int i = 0;
     for (;
-        cursor && cursor->_next;
-        cursor = cursor->_next) {
+        *cursor && (*cursor)->_next;
+        cursor = &(*cursor)->_next) {
         ++i;
-        if (!ret && cursor->_size >= size && cursor->_free == 1)
-            ret = cursor; // fits
-        else if (ret && cursor->_size >= size && ret->_size < cursor->_size &&
-            cursor->_free == 1)
-            *ret = *cursor; // fits better
+        if (!ret && (*cursor)->_size >= size && (*cursor)->_free == 1)
+            ret = (*cursor); // fits
+        else if (ret && (*cursor)->_size >= size && ret->_size < (*cursor)->_size &&
+            (*cursor)->_free == 1)
+            *ret = **cursor; // fits better
     }
     return ret;
 }
 
 void* init_memory(size_t size, void *ptr)
 {
+
 
     memblock ret;
     ret._size = size;
@@ -69,21 +72,25 @@ void* init_memory(size_t size, void *ptr)
 
     memcpy(ptr, &ret, sizeof(memblock));
 
-    memblock *btr = my_blocks();
-    for (; btr && btr->_next; btr = btr->_next);
-    if (btr->_ptr) {
-        // TODO FIX
-        ((memblock *) ptr)->_prev = btr;
-        btr->_next = ptr;
+    memblock **btr = my_blocks();
+    for (; *btr && (*btr)->_next; btr = &(*btr)->_next);
+    if (*btr) {
+
+
+        ((memblock *) ptr)->_prev = *btr;
+        (*btr)->_next = ptr;
     } else
-        *btr = *(memblock *) ptr;
+        *btr = (memblock *) ptr;
 
     return ret._ptr;
 }
 
 void fetch_mem()
+
 {
-    end_size(sbrk(getpagesize()));
+
+    sbrk(getpagesize());
+    end_size(sbrk(0));
 
     // TODO Assert thread safety : ptr == request
 }

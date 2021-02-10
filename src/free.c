@@ -7,14 +7,13 @@
 
 #include "my_mem.h"
 
-void free(void *ptr) {
+void free(void *ptr)
+{
     // TODO magic number check first bytes
     if (!ptr)
         return;
-    memblock *val = (memblock *)((long )ptr -  sizeof(memblock));
+    memblock *val = (memblock *) (((long) ptr) - sizeof(memblock));
+
+
     val->_free = 1;
-//    if (val->_prev && val->_next) {
-//        val->_prev = val->_next;
-//        val->_next->_prev = val->_prev;
-//    }
 }
