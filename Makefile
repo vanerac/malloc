@@ -20,19 +20,18 @@ TRC				=		NULL
 
 OTRC			=		$(TRC:%.c=%.o)
 
-CFLAGS			=		-fPIC -Wall -Werror -Wextra -pedantic
+CFLAGS			=		-fPIC -Wall -Werror -Wextra -std=gnu99
 
 CPPFLAGS		=		-Iinclude
 
-LDFLAGS			=		-shared
-
 NAME			=		 libmy_malloc.so
 
+LDFLAGS			=		-shared -Wl,-soname,$(NAME)
 
 all: $(NAME) ## hoes mad
 
 $(NAME): $(OBJ)
-	$(LINK.o) $(OBJ) -o $(NAME)
+	$(LINK.o) $^ $(LDLIBS) $(OUTPUT_OPTION)
 
 .SECONDEXPANSION:
 $(BUILDDIR)/%.o:    override CPPFLAGS += -MT $@ -MMD -MP -MF $(@:.o=.d)

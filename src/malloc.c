@@ -10,6 +10,7 @@
 
 void *malloc(size_t size)
 {
+    write(2, "bite\n", 5);
     void *sz = sbrk(0);
     size_t init_size = inital_size(sz);  // gets set only once
 

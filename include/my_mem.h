@@ -53,7 +53,7 @@ size_t end_size(size_t *size);
 
 size_t inital_size(void *size);
 
-memblock *my_blocks(memblock *v);
+memblock *my_blocks();
 
 void *find_mem(size_t size);
 

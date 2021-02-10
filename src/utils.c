@@ -32,11 +32,9 @@ size_t end_size(size_t *size)
     return ret;
 }
 
-memblock *my_blocks(memblock *v)
+memblock *my_blocks()
 {
-    static memblock val;
-    if (v)
-        val = *v;
+    static memblock val = {._ptr = NULL};
     return &val;
 }
 
@@ -71,14 +69,14 @@ void* init_memory(size_t size, void *ptr)
 
     memcpy(ptr, &ret, sizeof(memblock));
 
-    memblock *btr = my_blocks(NULL);
+    memblock *btr = my_blocks();
     for (; btr && btr->_next; btr = btr->_next);
-    if (btr) {
+    if (btr->_ptr) {
         // TODO FIX
         ((memblock *) ptr)->_prev = btr;
         btr->_next = ptr;
     } else
-        my_blocks(ptr);
+        *btr = *(memblock *) ptr;
 
     return ret._ptr;
 }
