@@ -6,14 +6,29 @@
 */
 
 #include "my_mem.h"
+#include <stdlib.h>
+
+
+/*
+** EPITECH PROJECT, 2020
+** my_putnbr.c
+** File description:
+** print a nbr on stdout
+*/
+
+#include "my_mem.h"
 
 void free(void *ptr)
 {
-    // TODO magic number check first bytes
-
     if (!ptr)
         return;
-    memblock *val = (memblock *) (((long) ptr) - sizeof(memblock));
+    pthread_mutex_lock(&lock);
 
-    val->_free = 1;
+    memblock *val = (memblock *) (((long) ptr) - sizeof(memblock));
+    if (val->_id != 0x6d616c6c6f63)
+        abort();
+    if (val->_free != 'N')
+        abort();
+    val->_free = 'Y';
+    pthread_mutex_unlock(&lock);
 }

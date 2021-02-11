@@ -47,24 +47,23 @@ void *find_mem(size_t size)
     int i = 0;
     for (; *cursor && (*cursor)->_next; cursor = &(*cursor)->_next) {
         ++i;
-        if (!ret && (*cursor)->_size >= size && (*cursor)->_free == 1)
+        if (!ret && (*cursor)->_size >= size && (*cursor)->_free == 'Y')
             ret = (*cursor); // fits
         else if (ret && (*cursor)->_size >= size &&
-            ret->_size < (*cursor)->_size && (*cursor)->_free == 1)
-            *ret = **cursor; // fits better
+            ret->_size < (*cursor)->_size && (*cursor)->_free == 'Y')
+            ret = *cursor; // fits better
     }
     return ret;
 }
 
 void *init_memory(size_t size, void *ptr)
 {
-
     memblock ret;
+    ret._id = 0x6d616c6c6f63;
     ret._size = size;
-    ret._free = 0;
+    ret._free = 'N';
     ret._ptr = (void *) (((long) ptr) + sizeof(memblock));
     ret._next = NULL;
-    ret._prev = NULL;
 
     memcpy(ptr, &ret, sizeof(memblock));
 
@@ -72,7 +71,7 @@ void *init_memory(size_t size, void *ptr)
     for (; *btr && (*btr)->_next; btr = &(*btr)->_next);
     if (*btr) {
 
-        ((memblock *) ptr)->_prev = *btr;
+//        ((memblock *) ptr)->_prev = *btr;
         (*btr)->_next = ptr;
     } else
         *btr = (memblock *) ptr;
@@ -82,9 +81,6 @@ void *init_memory(size_t size, void *ptr)
 
 void fetch_mem()
 {
-
     sbrk(getpagesize());
     end_size(sbrk(0));
-
-    // TODO Assert thread safety : ptr == request
 }

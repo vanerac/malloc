@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include "my_mem.h"
 
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
 size_t mpow(size_t v, size_t p)
 {
     if (p == 0)
@@ -24,31 +26,33 @@ size_t align(size_t s, int p)
 
 void *malloc(size_t size)
 {
+    pthread_mutex_lock(&lock);
 
     size = align(size, 0);
 
-    size_t init_size = inital_size(NULL);  // gets set only once
+    static size_t init_size = 0;  // gets set only once
     if (init_size == 0)
         init_size = inital_size(sbrk(0));
 
     memblock *ret = find_mem(size);
 
     if (ret) {
-        ret->_free = 0;
+        ret->_free = 'N';
+        pthread_mutex_unlock(&lock);
         return ret->_ptr;
     }
 
     size_t index = current_index(NULL);
+
     size_t expected_range = (init_size + index + size + sizeof(memblock));
 
-    // fetch new memory
     while (expected_range > end_size(NULL))
         fetch_mem();
 
-    //init it
     void *ptr = init_memory(size, (void *) (init_size + index));
-    // store it
+
     current_index((size_t *) (index + size + sizeof(memblock)));
 
+    pthread_mutex_unlock(&lock);
     return ptr;
 }

@@ -7,9 +7,11 @@
 
 #include "my_mem.h"
 
-void *calloc(size_t nmemb, size_t size) {
-
-
+void *calloc(size_t nmemb, size_t size)
+{
+    size_t demanded = nmemb * size;
+    if ((demanded / nmemb) != size)
+        return NULL;
     void *ptr = malloc(nmemb * size);
     memset(ptr, 0, nmemb * size);
     return ptr;

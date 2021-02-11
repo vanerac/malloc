@@ -11,6 +11,8 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <string.h>
+#include <assert.h>
+#include <pthread.h>
 
 /*
  * TODO Musts:
@@ -36,18 +38,15 @@
 // TODO bonus clear free on exit ??
 typedef struct mem_block memblock;
 
-struct  mem_block {
-    //int _id ;//= 0x6d616c6c6f63;
-
-    size_t _size;// = 0;
-
-    unsigned char _free;// = 0;
-
-    void *_ptr;// = NULL;
-
-    memblock *_next;// = NULL;
-    memblock *_prev;
+struct mem_block {
+    long _id;
+    size_t _size;
+    unsigned char _free;
+    void *_ptr;
+    memblock *_next;
 };
+
+extern pthread_mutex_t lock;
 
 size_t end_size(size_t *size);
 
@@ -72,6 +71,5 @@ void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 
 void *reallocarray(void *ptr, size_t nmemb, size_t size);
-
 
 #endif //C_MY_MEM_H
