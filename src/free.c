@@ -6,17 +6,6 @@
 */
 
 #include "my_mem.h"
-#include <stdlib.h>
-
-
-/*
-** EPITECH PROJECT, 2020
-** my_putnbr.c
-** File description:
-** print a nbr on stdout
-*/
-
-#include "my_mem.h"
 
 void free(void *ptr)
 {

@@ -13,6 +13,8 @@
 #include <string.h>
 #include <assert.h>
 #include <pthread.h>
+#include <stdlib.h>
+
 
 /*
  * TODO Musts:
@@ -46,6 +48,8 @@ struct mem_block {
     memblock *_next;
 };
 
+#define ALIGN16(x) (((x) + ((16) - 1)) & ~((16) - 1))
+
 extern pthread_mutex_t lock;
 
 size_t end_size(size_t *size);
@@ -71,5 +75,7 @@ void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 
 void *reallocarray(void *ptr, size_t nmemb, size_t size);
+
+size_t align(size_t s, int p);
 
 #endif //C_MY_MEM_H
