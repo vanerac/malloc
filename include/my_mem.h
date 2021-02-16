@@ -38,14 +38,14 @@
  * */
 
 // TODO bonus clear free on exit ??
-typedef struct mem_block memblock;
+typedef struct mem_block memblock_t;
 
 struct mem_block {
-    long _id;
-    size_t _size;
-    unsigned char _free;
-    void *_ptr;
-    memblock *_next;
+    long _id; // 4
+    size_t _size; // 8
+    unsigned char _free; // 1
+    void *_ptr; // 8
+    memblock_t *_next; // 8
 };
 
 #define ALIGN16(x) (((x) + ((16) - 1)) & ~((16) - 1))
@@ -56,7 +56,7 @@ size_t end_size(size_t *size);
 
 size_t inital_size(void *size);
 
-memblock **my_blocks();
+memblock_t **my_blocks();
 
 void *find_mem(size_t size);
 

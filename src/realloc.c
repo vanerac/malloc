@@ -9,7 +9,7 @@
 
 int expandPointer(void *ptr, size_t size)
 {
-    memblock *data = ptr - sizeof(memblock);
+    memblock_t *data = ptr - sizeof(memblock_t);
 
     if (data == NULL)
         abort(); // invalid pointer
@@ -21,7 +21,7 @@ int expandPointer(void *ptr, size_t size)
         data->_size = size;
         return 1;
     } else if (!data->_next) {
-        while ((size_t) (data + sizeof(memblock) + size) > end_size(NULL))
+        while ((size_t) (data + sizeof(memblock_t) + size) > end_size(NULL))
             fetch_mem();
         data->_size = size;
         current_index((void *) (current_index(NULL) + size));
@@ -32,7 +32,7 @@ int expandPointer(void *ptr, size_t size)
 
 void *realloc(void *ptr, size_t size)
 {
-    if (!size) {
+    if (ptr && !size) {
         free(ptr);
         return NULL;
     }
@@ -44,7 +44,7 @@ void *realloc(void *ptr, size_t size)
     if (!ptr)
         return newptr;
     memcpy(newptr, ptr,
-        ((memblock *) ((size_t) ptr - sizeof(memblock)))->_size);
+        ((memblock_t *) ((size_t) ptr - sizeof(memblock_t)))->_size);
     free(ptr);
     return newptr;
 }

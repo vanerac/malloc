@@ -27,22 +27,22 @@ size_t align(size_t s, int p)
 void *malloc(size_t size)
 {
     pthread_mutex_lock(&lock);
-    size = ALIGN16(size);// todo fix this askip
+    size = ALIGN16(size);
     static size_t init_size = 0;  // gets set only once
     if (init_size == 0)
         init_size = inital_size(sbrk(0));
-    memblock *ret = find_mem(size);
+    memblock_t *ret = find_mem(size);
     if (ret) {
         ret->_free = 'N';
         pthread_mutex_unlock(&lock);
         return ret->_ptr;
     }
     size_t index = current_index(NULL);
-    size_t expected_range = (init_size + index + size + sizeof(memblock));
+    size_t expected_range = (init_size + index + size + sizeof(memblock_t));
     while (expected_range > end_size(NULL))
         fetch_mem();
     void *ptr = init_memory(size, (void *) (init_size + index));
-    current_index((size_t *) (index + size + sizeof(memblock)));
+    current_index((size_t *) (index + size + sizeof(memblock_t)));
     pthread_mutex_unlock(&lock);
     return ptr;
 }
