@@ -46,6 +46,7 @@ struct mem_block {
     unsigned char _free; // 1
     void *_ptr; // 8
     memblock_t *_next; // 8
+    memblock_t *_prev;
 };
 
 #define ALIGN16(x) (((x) + ((16) - 1)) & ~((16) - 1))

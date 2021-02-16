@@ -53,29 +53,18 @@ size_t append_frees(memblock_t *ptr, size_t needed, int *appened)
 
 void *find_mem(size_t size)
 {
-    // todo find blocks following each other
+    // todo cut block that are really too big
     memblock_t **cursor = my_blocks();
     memblock_t *ret = NULL;
-//    int apppended_save = 0;
-        int skip = 0;
     for (; *cursor && (*cursor)->_next; cursor = &(*cursor)->_next) {
         if ((*cursor)->_free != 'Y')
             continue;
-        if (skip-- > 0)
-            continue;
-
-//        int appended = 0;
         size_t c_size = (*cursor)->_size;
-        // append_frees(*cursor, size, &appended);
-
         if (!ret && c_size >= size)
             ret = (*cursor); // fits
         else if (ret && c_size >= size && ret->_size < c_size)
             ret = *cursor; // fits better
-
     }
-
-    // if appended
     return ret;
 }
 
@@ -93,11 +82,13 @@ void *init_memory(size_t size, void *ptr)
     memblock_t **btr = my_blocks();
     for (; *btr && (*btr)->_next; btr = &(*btr)->_next);
     if (*btr) {
-
-        //        ((memblock *) ptr)->_prev = *btr;
+        ((memblock_t *) ptr)->_prev = *btr;
         (*btr)->_next = ptr;
-    } else
+    } else {
+        ((memblock_t *) ptr)->_prev = NULL;
         *btr = (memblock_t *) ptr;
+    }
+
 
     return ret._ptr;
 }
