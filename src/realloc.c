@@ -7,16 +7,14 @@
 
 #include "my_mem.h"
 
-int expandPointer(void *ptr, size_t size)
+int expand_pointer(void *ptr, size_t size)
 {
     memblock_t *data = ptr - sizeof(memblock_t);
 
     if (data == NULL)
-        abort(); // invalid pointer
+        abort();
     if (data->_size >= size)
         return 1;
-
-    //     else
     if (data->_next && ((size_t) ptr + size) < (size_t) data->_next) {
         data->_size = size;
         return 1;
@@ -38,7 +36,7 @@ void *realloc(void *ptr, size_t size)
     }
 
     size = ALIGN16(size);
-    if (ptr && size && expandPointer(ptr, size))
+    if (ptr && size && expand_pointer(ptr, size))
         return ptr;
     void *newptr = malloc(size);
     if (!ptr)

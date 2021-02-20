@@ -15,37 +15,14 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-
-/*
- * TODO Musts:
- *  You allocation strategy must be like follow:
- *  - you must align your memory on a power of 2.
- *  - the break must always be aligned on a multiple of 2 pages.
- *  - you must implement the best fit algorithm.
- *
- * TODO Store:
- *  - Inital memory pos (on startup, before first fetch)
- *  - End fetched page
- *  - Current Index on page (not allocated to a ptr)
- *  - List of allocated ptr (linked list)
- *
- * TODO Pointer Structure :
- *  - Is Malloced Id ?
- *  - Is Free
- *  - Size
- *  - Ptr (return this for malloc)
- *  - Ptr to next Pointer Block
- * */
-
-// TODO bonus clear free on exit ??
 typedef struct mem_block memblock_t;
 
 struct mem_block {
-    long _id; // 4
-    size_t _size; // 8
-    unsigned char _free; // 1
-    void *_ptr; // 8
-    memblock_t *_next; // 8
+    long _id;
+    size_t _size;
+    unsigned char _free;
+    void *_ptr;
+    memblock_t *_next;
     memblock_t *_prev;
 };
 
@@ -57,7 +34,7 @@ size_t end_size(size_t *size);
 
 size_t inital_size(void *size);
 
-memblock_t **my_blocks();
+memblock_t **my_blocks(void);
 
 void *find_mem(size_t size);
 
@@ -65,7 +42,7 @@ void *init_memory(size_t size, void *ptr);
 
 size_t current_index(size_t *index);
 
-void fetch_mem();
+void fetch_mem(void);
 
 void *malloc(size_t size);
 
@@ -77,6 +54,5 @@ void *realloc(void *ptr, size_t size);
 
 void *reallocarray(void *ptr, size_t nmemb, size_t size);
 
-size_t align(size_t s, int p);
 
-#endif //C_MY_MEM_H
+#endif

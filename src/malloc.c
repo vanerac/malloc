@@ -10,25 +10,42 @@
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-size_t mpow(size_t v, size_t p)
+size_t inital_size(void *size)
 {
-    if (p == 0)
-        return 1;
-    return v * mpow(v, p - 1);
+    static size_t ret = 0;
+    if (size)
+        ret = (size_t) size;
+    return ret;
 }
 
-size_t align(size_t s, int p)
+size_t current_index(size_t *index)
 {
-    if (s > mpow(2, p))
-        return align(s, p + 1);
-    return mpow(2, p);
+    static size_t ret = 0;
+    if (index)
+        ret = (size_t) index;
+    return ret;
+}
+
+size_t end_size(size_t *size)
+{
+    static size_t ret = 0;
+    if (size)
+        ret = (size_t) size;
+
+    return ret;
+}
+
+memblock_t **my_blocks(void)
+{
+    static memblock_t *val = NULL;
+    return &val;
 }
 
 void *malloc(size_t size)
 {
     pthread_mutex_lock(&lock);
     size = ALIGN16(size);
-    static size_t init_size = 0;  // gets set only once
+    static size_t init_size = 0;
     if (init_size == 0)
         init_size = inital_size(sbrk(0));
     memblock_t *ret = find_mem(size);

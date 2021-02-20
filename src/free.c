@@ -19,13 +19,5 @@ void free(void *ptr)
     if (val->_free != 'N')
         abort();
     val->_free = 'Y';
-//    if (end_size(NULL) - getpagesize() > current_index(NULL)) {
-//        sbrk(-getpagesize());
-//        end_size(sbrk(0));
-//        // rm block
-//    }
-
-// todo regroup free
-    // if last block -> rm & sbrk(-size)
     pthread_mutex_unlock(&lock);
 }
