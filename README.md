@@ -1,0 +1,2 @@
+# malloc
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e31039e8f85b4a1aa25e7825554f4578)](https://app.codacy.com/gh/vanerac/malloc?utm_source=github.com&utm_medium=referral&utm_content=vanerac/malloc&utm_campaign=Badge_Grade_Settings)
